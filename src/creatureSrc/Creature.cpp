@@ -31,7 +31,6 @@ void Creature::render() {
 
 double Creature::calcEnergyLoss() const {
 
-    //kinetic energy formula scaled by 700 factor
     return (pow(this->genome.getSize(), 3) * pow(this->getSpeed(),2) ) / 150;
 }
 
@@ -59,7 +58,9 @@ void Creature::die() {
 
 void Creature::update(FoodContainer& foodContainer) {
 
-    if(this->genome.getEnergy() <= 0){
+    std::cout << foodContainer.getFoodNum() << std::endl;
+
+    if(this->genome.getEnergy() <= 0 || (foodContainer.getFoodNum() == 0 && foodConsumed == 0)){
         die();
         return;
     }
@@ -71,15 +72,14 @@ void Creature::update(FoodContainer& foodContainer) {
         this->updateMovement(nearestFoodInVectorIndex,foodContainer, this->getRelativeSpeedFactor());
 
     }else if(this->sleeping == true){
-
         this->reproductionStatus = this->checkIfShouldReproduce();
+        this->genome.setEnergy(5000);
 
-    }else if(this->foodConsumed >= 2 || this->foodConsumed == 1 && this->startingEnergy / 2 >= this->getEnergy()){
+    }else if(this->foodConsumed >= 2 || this->foodConsumed == 1 && this->startingEnergy / 1.5 >= this->getEnergy()){
 
         this->headToSleep(movement->getClosestPathToBoundaryVector());
 
     }else{
-//        movement->setRelativeSpeedFactor(this->relativeSpeedFactor);
         movement->setRelativeSpeedFactor(this->genome.getRelativeSpeedFact());
         this->movement->move();
         this->updateEnergy();

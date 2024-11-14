@@ -24,16 +24,16 @@ CreatureFactory::makeChild(const Genome& parentGenome, const Vector2 coord) {
     std::unique_ptr<Creature> creature = std::make_unique<Creature>(
 
             Vector2{coord.x,coord.y}
-    ,parentGenome.getSize(),
-    parentGenome.getVelocity(),
-    parentGenome.getSeeingRadius(),
-    parentGenome.getRelativeSpeedFact()
+        ,parentGenome.getSize(),
+        parentGenome.getVelocity(),
+        parentGenome.getSeeingRadius(),
+        parentGenome.getRelativeSpeedFact()
 
     );
 
     creature->getGenome().generateGenome(parentGenome);
 
-    std::unique_ptr<Movable> movement = std::make_unique<Movement>(creature->getGenome().getSize(),creature->getGenome().getVelocity() );
+    std::unique_ptr<Movable> movement = std::make_unique<Movement>(creature->getGenome().getSize(),creature->getGenome().getVelocity());
 
     movement->setInitialCreaturePosVector(coord.x, coord.y);
     Seeing seeing{movement->getPosition(), creature->getGenome().getSeeingRadius()};

@@ -1,5 +1,14 @@
-//
-// Created by Kacper Zimmer on 11/07/2024.
-//
+#include "../../include/DataManagerInc/dataManager.h"
 
-#include "dataManager.h"
+
+const std::unordered_map<int, float> &DataManager::getVelocityPerDay() const {
+    return velocityPerDay;
+}
+
+const std::unordered_map<int, float> &DataManager::getSizePerDay() const {
+    return sizePerDay;
+}
+
+const std::unordered_map<int, Genome> &DataManager::getGenomePerDay() const {
+    return genomePerDay;
+}
