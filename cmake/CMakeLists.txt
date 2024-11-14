@@ -27,7 +27,7 @@ endif()
 
 # Our Project
 
-add_executable(${PROJECT_NAME} main.cpp src/creature.cpp include/raygui.h include/movement.h src/movement.cpp)
+add_executable(${PROJECT_NAME} ../main.cpp ../src/creatureSrc/creature.cpp ../include/gui_lib/raygui.h ../include/CreatureIncludes/movement.h ../src/creatureSrc/movement.cpp ../src/creatureSrc/seeing.cpp ../include/foodInclude/Food.h ../src/foodSrc/Food.cpp ../include/foodInclude/foodContainer.h ../src/foodSrc/foodContainer.cpp  ../include/EntityFactoryInclude/creatureFactory.h ../src/EntityFactorySrc/creatureFactory.cpp ../include/CreatureIncludes/creatureContainer/CreatureContainer.h ../src/creatureSrc/creatureContainerSrc/CreatureContainer.cpp ../include/CreatureIncludes/Movable.h ../src/creatureSrc/Movable.cpp ../include/CreatureIncludes/Genome.h ../src/creatureSrc/Genome.cpp ../include/SimulationInclude/Simulation.h ../src/SimulationSrc/Simulation.cpp)
 #set(raylib_VERBOSE 1)
 target_link_libraries(${PROJECT_NAME} raylib)
 
