@@ -51,7 +51,7 @@ public:
     //constructors
     Creature(Vector2 coord, float radius, float speed, float seeingRange) :
 
-              genome{speed, seeingRange, 5000, radius, 1} {
+            genome{speed, seeingRange, 5000, radius, 1} {
     }
 
     Creature();
@@ -59,7 +59,6 @@ public:
     Creature(Vector2 coord, float radius, float speed, float seeingRange, short relativeSpeedFactor)
             : genome{speed, seeingRange, 5000, radius, relativeSpeedFactor}
     {
-
     }
 
 

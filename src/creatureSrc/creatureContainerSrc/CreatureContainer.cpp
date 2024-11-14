@@ -18,53 +18,10 @@ void CreatureContainer::render() {
 
 void CreatureContainer::update(FoodContainer& foodContainer) {
 
-    size_t countSleeping{};
+    this->countSleeping = 0;
 
-    for (size_t i = 0; i < this->creatureContainer.size(); ++i) {
-
-        if(this->creatureContainer[i] == nullptr){
-            continue;
-        }
-
-        if (creatureContainer[i]->isDead()) {
-            cleanUpTheCreature(i);
-            continue;
-        }
-
-        if(creatureContainer[i]->isSleeping() == true){
-            ++countSleeping;
-        }
-
-
-        creatureContainer[i]->update(foodContainer);
-
-        std::cout << creatureContainer[i]->getEnergy() << std::endl;
-
-    }
-    if(countSleeping == size){
-
-        for(size_t i = 0; i < this->creatureContainer.size(); ++i) {
-
-            if (this->creatureContainer[i] == nullptr) {
-                continue;
-            }
-
-            if (creatureContainer[i]->shouldReproduce() == true) {
-                this->generateNewCreature(i);
-                ++this->size;
-            }
-        }
-        foodContainer.generateFood(30);
-
-        for(const auto & i : this->creatureContainer){
-
-            if(i == nullptr){
-                continue;
-            }
-
-            i->wakeUp();
-        }
-    }
+    updateStatus(foodContainer);
+    processEndOfDayCycle(foodContainer);
 }
 
 void CreatureContainer::generate(int quantity) {
@@ -99,48 +56,48 @@ void CreatureContainer::generateSymmetricaly(size_t quantity,float radius) {
     this->size = quantity;
     int scale = (radius / 10);
 
-        size_t numEachSide = quantity / 4;
-    //TODO looks absolutely disgusting
+    size_t numEachSide = quantity / 4;
+
     float spacing = (SCREEN_HEIGHT / ((radius) * 2 * static_cast<float> (quantity))) *
-            static_cast<float>((75 * ((scale == 0) ? 1 : scale)));
+                    static_cast<float>((75 * ((scale == 0) ? 1 : scale)));
 
 
-        for(int i = 0; i < 4; ++i){
-            for(int j = 0; j < numEachSide; ++j) {
+    for(int i = 0; i < 4; ++i){
+        for(int j = 0; j < numEachSide; ++j) {
 
 
-                std::unique_ptr<Creature> currentCreature = std::move(factory->prepareOne(
+            std::unique_ptr<Creature> currentCreature = std::move(factory->prepareOne(
+                    //TODO implement speed based on deltatime
+                    this->startingXpos,
+                    this->startingYpos,
+                    radius, 2.f,
+                    40.f));
 
-                        this->startingXpos,
-                        this->startingYpos,
-                        radius, 2.f,
-                        40.f));
+            creatureContainer.push_back(std::move(currentCreature));
 
-                creatureContainer.push_back(std::move(currentCreature));
+            switch (i){
 
-                switch (i){
+                case 0:
+                    this->startingYpos += spacing;
+                    break;
 
-                    case 0:
-                        this->startingYpos += spacing;
-                        break;
+                case 1:
+                    this->startingXpos += spacing;
+                    break;
 
-                    case 1:
-                        this->startingXpos += spacing;
-                        break;
+                case 2:
+                    this->startingYpos -= spacing;
+                    break;
 
-                    case 2:
-                        this->startingYpos -= spacing;
-                        break;
+                case 3:
+                    this->startingXpos -= spacing;
+                    break;
 
-                    case 3:
-                        this->startingXpos -= spacing;
-                        break;
-
-                    default:
-                        std::cout << "wrong indexing" << std::endl;
-                }
+                default:
+                    std::cout << "wrong indexing" << std::endl;
             }
         }
+    }
 }
 
 CreatureContainer::CreatureContainer(std::unique_ptr<entityFactory> &factory) {
@@ -158,12 +115,13 @@ void CreatureContainer::generateNewCreature(size_t index) {
             std::move(
 
                     factory->makeChild(
-                        (this->creatureContainer[index])->getGenome(),
-                        (this->creatureContainer[index]->getPosition())
 
-                        )
+                            (this->creatureContainer[index])->getGenome(),
+                            (this->creatureContainer[index]->getPosition())
+
                     )
-        );
+            )
+    );
 
 }
 
@@ -188,14 +146,19 @@ void CreatureContainer::cleanUpTheCreature(size_t index) {
 }
 
 void CreatureContainer::inreaseRelativeSpeed() {
+
     short currentRelativeSpeed{};
     for(const auto & x : this->creatureContainer){
 
+
         currentRelativeSpeed = x->getRelativeSpeedFactor();
         currentRelativeSpeed *= 2;
+
         if(currentRelativeSpeed <= 8) {
             x->setRelativeSpeedFactor(currentRelativeSpeed);
+
         }else{
+
             x->setRelativeSpeedFactor(8);
         }
 
@@ -203,12 +166,16 @@ void CreatureContainer::inreaseRelativeSpeed() {
 
 }
 
+
 void CreatureContainer::slowDownRelativeSpeed() {
+
     short currentRelativeSpeed{};
+
     for(const auto & x : this->creatureContainer){
 
         currentRelativeSpeed = x->getRelativeSpeedFactor();
         currentRelativeSpeed /= 2;
+
         if(currentRelativeSpeed >= 1){
             x->setRelativeSpeedFactor(currentRelativeSpeed);
 
@@ -217,6 +184,62 @@ void CreatureContainer::slowDownRelativeSpeed() {
         }
 
     }
+}
+
+void CreatureContainer::updateStatus(FoodContainer& foodContainer) {
+
+    for (size_t i = 0; i < this->creatureContainer.size(); ++i) {
+
+        if(this->creatureContainer[i] == nullptr){
+            continue;
+        }
+
+        if (creatureContainer[i]->isDead()) {
+            cleanUpTheCreature(i);
+            continue;
+        }
+
+        if(creatureContainer[i]->isSleeping() == true){
+            ++countSleeping;
+        }
+
+
+        creatureContainer[i]->update(foodContainer);
+
+//        std::cout << creatureContainer[i]->getEnergy() << std::endl;
+
+    }
+}
+
+void CreatureContainer::processEndOfDayCycle(FoodContainer &foodContainer) {
+    if(countSleeping == size){
+        for(size_t i = 0; i < this->creatureContainer.size(); ++i) {
+
+            if (this->creatureContainer[i] == nullptr) {
+                continue;
+            }
+
+            if (creatureContainer[i]->shouldReproduce() == true) {
+                this->generateNewCreature(i);
+                ++this->size;
+            }
+        }
+        foodContainer.generateFood(30);
+
+        for(const auto & i : this->creatureContainer){
+
+            if(i == nullptr){
+                continue;
+            }
+
+
+            i->wakeUp();
+            ++day;
+            notify(i->getSpeed(), i->getRadius(), i->getGenome().getSeeingRadius(),day);
+        }
+
+    }
+
 }
 
 

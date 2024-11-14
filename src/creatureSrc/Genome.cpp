@@ -1,9 +1,7 @@
 
 #include "../../include/CreatureIncludes/Genome.h"
-#include "random"
-
-
 #include <random>
+
 
 void Genome::mutateTheGenom() {
     std::random_device rd;

@@ -7,6 +7,7 @@
 
 class Genome {
 private:
+
     float velocity{};
     float size{};
     float seeingRadius{};
@@ -24,6 +25,7 @@ public:
 
     bool shouldGeneMutate() const;
     void mutateTheGenom();
+
     //getters
     float getSize() const;
     double getEnergy() const;

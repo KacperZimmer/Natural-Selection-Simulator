@@ -27,8 +27,8 @@ endif()
 
 # Our Project
 
-add_executable(${PROJECT_NAME} ../main.cpp ../src/creatureSrc/creature.cpp ../include/gui_lib/raygui.h ../include/CreatureIncludes/movement.h ../src/creatureSrc/movement.cpp ../src/creatureSrc/seeing.cpp ../include/foodInclude/Food.h ../src/foodSrc/Food.cpp ../include/foodInclude/foodContainer.h ../src/foodSrc/foodContainer.cpp  ../include/EntityFactoryInclude/creatureFactory.h ../src/EntityFactorySrc/creatureFactory.cpp ../include/CreatureIncludes/creatureContainer/CreatureContainer.h ../src/creatureSrc/creatureContainerSrc/CreatureContainer.cpp ../include/CreatureIncludes/Movable.h ../src/creatureSrc/Movable.cpp ../include/CreatureIncludes/Genome.h ../src/creatureSrc/Genome.cpp ../include/SimulationInclude/Simulation.h ../src/SimulationSrc/Simulation.cpp)
-#set(raylib_VERBOSE 1)
+add_executable(${PROJECT_NAME} ../main.cpp ../src/creatureSrc/Creature.cpp ../include/gui_lib/raygui.h ../include/CreatureIncludes/movement.h ../src/creatureSrc/Movement.cpp ../src/creatureSrc/Seeing.cpp ../include/foodInclude/Food.h ../src/foodSrc/Food.cpp ../include/foodInclude/foodContainer.h ../src/foodSrc/FoodContainer.cpp ../include/EntityFactoryInclude/creatureFactory.h ../src/EntityFactorySrc/CreatureFactory.cpp ../include/CreatureIncludes/creatureContainer/CreatureContainer.h ../src/creatureSrc/creatureContainerSrc/CreatureContainer.cpp ../include/CreatureIncludes/Movable.h ../src/creatureSrc/Movable.cpp ../include/CreatureIncludes/Genome.h ../src/creatureSrc/Genome.cpp ../include/SimulationInclude/Simulation.h ../src/SimulationSrc/Simulation.cpp ../include/IObserver.h ../include/DataManagerInc/dataManager.h ../src/DataManagerSrc/DataManager.cpp ../include/ObserverSubject.h)
+#set(raylib_VERBOSE 1)xq
 target_link_libraries(${PROJECT_NAME} raylib)
 
 

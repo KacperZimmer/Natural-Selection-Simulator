@@ -5,6 +5,7 @@
 class FoodContainer {
 private:
     std::vector<std::unique_ptr<Food>> foodVector{};
+    int foodNum{-1};
 
 public:
     void generateFood(int quantity);
@@ -12,6 +13,9 @@ public:
     const Vector2& getVectorAtIndex(int index);
     void renderContainer();
     void deleteFood(int x);
+    size_t containerSize();
+
+    int getFoodNum() const;
 };
 
 

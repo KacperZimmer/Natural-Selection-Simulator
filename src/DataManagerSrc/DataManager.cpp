@@ -1,5 +1,10 @@
-//
-// Created by Kacper Zimmer on 11/07/2024.
-//
+#include "../../include/DataManagerInc/dataManager.h"
 
-#include "dataManager.h"
+void DataManager::update(float velocity, float size, float seeingRadius, int day) {
+
+    this->velocity = velocity;
+    this->size = size;
+    this->seeingRadius = seeingRadius;
+    this->day = day;
+
+}
