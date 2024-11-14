@@ -17,14 +17,15 @@ private:
 
     std::vector<std::unique_ptr<Creature>> creatureContainer{};
     std::unique_ptr<entityFactory> factory;
-    void cleanUpTheCreature(size_t index);
-    void generateNewCreature(size_t index);
     size_t countSleeping{};
+    std::vector<IObserver> observers{};
+    size_t size{};
+
     void updateStatus(FoodContainer& foodContainer);
     void processEndOfDayCycle(FoodContainer& foodContainer);
-    std::vector<IObserver> observers{};
+    void cleanUpTheCreature(size_t index);
+    void generateNewCreature(size_t index);
 
-    size_t size{};
 
 public:
     void slowDownRelativeSpeed();

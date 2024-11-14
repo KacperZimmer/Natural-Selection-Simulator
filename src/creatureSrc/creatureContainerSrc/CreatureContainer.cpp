@@ -11,7 +11,6 @@ void CreatureContainer::render() {
             continue;
 
         }
-
         creature->render();
     }
 }
@@ -206,7 +205,6 @@ void CreatureContainer::updateStatus(FoodContainer& foodContainer) {
 
         creatureContainer[i]->update(foodContainer);
 
-//        std::cout << creatureContainer[i]->getEnergy() << std::endl;
 
     }
 }

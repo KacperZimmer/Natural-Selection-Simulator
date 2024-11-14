@@ -2,20 +2,25 @@
 #ifndef EXAMPLE_DATAMANAGER_H
 #define EXAMPLE_DATAMANAGER_H
 
+#include <unordered_map>
 #include "../IObserver.h"
+#include "../CreatureIncludes/Genome.h"
 
-class DataManager : public IObserver{
+
+class DataManager {
 
 private:
 
-    float velocity{};
-    float size{};
-    float seeingRadius{};
-    int day{};
+    std::unordered_map<int,float> velocityPerDay{};
+    std::unordered_map<int,float> sizePerDay{};
+    std::unordered_map<int, Genome> genomePerDay{};
+
 
 public:
+    const std::unordered_map<int, float> &getVelocityPerDay() const;
+    const std::unordered_map<int, float> &getSizePerDay() const;
+    const std::unordered_map<int, Genome> &getGenomePerDay() const;
 
-    void update(float velocity, float size, float seeingRadius, int day) override;
 
 };
 

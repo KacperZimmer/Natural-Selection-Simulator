@@ -1,10 +1,14 @@
 #include "../../include/DataManagerInc/dataManager.h"
 
-void DataManager::update(float velocity, float size, float seeingRadius, int day) {
 
-    this->velocity = velocity;
-    this->size = size;
-    this->seeingRadius = seeingRadius;
-    this->day = day;
+const std::unordered_map<int, float> &DataManager::getVelocityPerDay() const {
+    return velocityPerDay;
+}
 
+const std::unordered_map<int, float> &DataManager::getSizePerDay() const {
+    return sizePerDay;
+}
+
+const std::unordered_map<int, Genome> &DataManager::getGenomePerDay() const {
+    return genomePerDay;
 }
