@@ -51,4 +51,12 @@ int FoodContainer::getFoodNum() const {
     return foodNum;
 }
 
+FoodContainer::FoodContainer(int numOfFoodToGenerate) : numOfFoodToGenerate(numOfFoodToGenerate) {
+    this->numOfFoodToGenerate = numOfFoodToGenerate;
+}
+
+int FoodContainer::getNumOfFoodToGenerate() const {
+    return numOfFoodToGenerate;
+}
+
 

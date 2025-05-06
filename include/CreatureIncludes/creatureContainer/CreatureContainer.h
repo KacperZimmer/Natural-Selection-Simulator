@@ -18,8 +18,13 @@ private:
     std::vector<std::unique_ptr<Creature>> creatureContainer{};
     std::unique_ptr<entityFactory> factory;
     size_t countSleeping{};
-    std::vector<IObserver> observers{};
     size_t size{};
+    std::vector<IObserver> observers{};
+    float sizeCreature{};
+    float seeingRange{};
+    float speed{};
+
+
 
     void updateStatus(FoodContainer& foodContainer);
     void processEndOfDayCycle(FoodContainer& foodContainer);
@@ -42,7 +47,7 @@ public:
 
 
     void generateSymmetricaly(size_t quantity, float radius);
-    explicit CreatureContainer(std::unique_ptr<entityFactory>& factory);
+    explicit CreatureContainer(std::unique_ptr<entityFactory>& factory, float size, float seeingRange, float speed);
     void turnOnVision();
     void turnOffVision();
 

@@ -25,9 +25,8 @@ void CreatureContainer::update(FoodContainer& foodContainer) {
 
 void CreatureContainer::generate(int quantity) {
 
-    for(int i = 0; i < quantity; ++i){
-        this->creatureContainer.push_back(this->factory->prepareOne(100,100,10.f, 2.f, 30.f));
-    }
+
+
 }
 
 void CreatureContainer::turnOnVision() {
@@ -60,17 +59,17 @@ void CreatureContainer::generateSymmetricaly(size_t quantity,float radius) {
     float spacing = (SCREEN_HEIGHT / ((radius) * 2 * static_cast<float> (quantity))) *
                     static_cast<float>((75 * ((scale == 0) ? 1 : scale)));
 
+    std::cout << this->sizeCreature << std::endl;
 
     for(int i = 0; i < 4; ++i){
         for(int j = 0; j < numEachSide; ++j) {
 
 
             std::unique_ptr<Creature> currentCreature = std::move(factory->prepareOne(
-                    //TODO implement speed based on deltatime
                     this->startingXpos,
                     this->startingYpos,
-                    radius, 2.f,
-                    40.f));
+                    this->sizeCreature, 2.f,
+                    this->seeingRange));
 
             creatureContainer.push_back(std::move(currentCreature));
 
@@ -99,7 +98,11 @@ void CreatureContainer::generateSymmetricaly(size_t quantity,float radius) {
     }
 }
 
-CreatureContainer::CreatureContainer(std::unique_ptr<entityFactory> &factory) {
+CreatureContainer::CreatureContainer(std::unique_ptr<entityFactory> &factory,  float size, float seeingRange, float speed) {
+
+    this->sizeCreature = size;
+    this->seeingRange = seeingRange;
+    this->speed = speed;
 
     this->factory = std::move(factory);
 }
@@ -222,7 +225,7 @@ void CreatureContainer::processEndOfDayCycle(FoodContainer &foodContainer) {
                 ++this->size;
             }
         }
-        foodContainer.generateFood(30);
+        foodContainer.generateFood(foodContainer.getNumOfFoodToGenerate());
 
         for(const auto & i : this->creatureContainer){
 
