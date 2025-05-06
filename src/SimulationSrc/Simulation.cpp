@@ -7,6 +7,7 @@
 #include "../../include/EntityFactoryInclude/creatureFactory.h"
 #include "../../include/CreatureIncludes/creatureContainer/CreatureContainer.h"
 
+
 void Simulation::run() {
 
     int creatureCount = 24;
@@ -14,7 +15,7 @@ void Simulation::run() {
     bool inMenu = true;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Selection simulator");
-    SetTargetFPS(60);
+    SetTargetFPS(1000);
 
     while (!WindowShouldClose()) {
         if (inMenu) {
@@ -23,8 +24,8 @@ void Simulation::run() {
 
             DrawText("Ustawienia symulacji", SCREEN_WIDTH / 2 - 100, 50, 20, DARKGRAY);
 
-            GuiSpinner(Rectangle{SCREEN_WIDTH / 2 - 60, 100, 120, 30}, "Stworzenia:", &creatureCount, 1, 100, true);
-            GuiSpinner(Rectangle{SCREEN_WIDTH / 2 - 60, 150, 120, 30}, "Jedzenie:", &foodCount, 1, 100, true);
+            GuiSpinner(Rectangle{SCREEN_WIDTH / 2 - 60, 100, 120, 30}, "Stworzenia:", &creatureCount, 1, 5, false);
+            GuiSpinner(Rectangle{SCREEN_WIDTH / 2 - 60, 150, 120, 30}, "Jedzenie:", &foodCount, 1, 5, false);
 
             if (GuiButton(Rectangle{SCREEN_WIDTH / 2 - 60, 200, 120, 40}, "Start")) {
                 inMenu = false;
