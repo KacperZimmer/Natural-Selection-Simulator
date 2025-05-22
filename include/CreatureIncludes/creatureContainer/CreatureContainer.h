@@ -6,6 +6,7 @@
 #include <vector>
 #include "../creature.h"
 #include "../../ObserverSubject.h"
+#include "../../DataManager/DataManager.h"
 #include "../../EntityFactoryInclude/entityFactory.h"
 
 class CreatureContainer : ObserverSubject{
@@ -19,7 +20,7 @@ private:
     std::unique_ptr<entityFactory> factory;
     size_t countSleeping{};
     size_t size{};
-    std::vector<IObserver> observers{};
+    std::shared_ptr<DataManager> dataHub{};
     float sizeCreature{};
     float seeingRange{};
     float speed{};
@@ -35,6 +36,7 @@ private:
 public:
     void slowDownRelativeSpeed();
     void inreaseRelativeSpeed();
+    size_t getAive();
     void render();
     float startingXpos{20};
     float startingYpos{20};
@@ -45,11 +47,13 @@ public:
     void generate(int quantity);
     void update(FoodContainer& foodContainer);
 
-
     void generateSymmetricaly(size_t quantity, float radius);
     explicit CreatureContainer(std::unique_ptr<entityFactory>& factory, float size, float seeingRange, float speed);
     void turnOnVision();
     void turnOffVision();
+    void generateCentre(size_t quantity, float radius);
+
+    const std::shared_ptr<DataManager> &getDataHub() const;
 
 };
 

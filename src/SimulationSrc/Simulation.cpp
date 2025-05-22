@@ -12,13 +12,13 @@ void Simulation::run() {
 
     int creatureCount   = 24;
     int foodCount       = 50;
-    int organismSize    = 20;    // wielkość organizmu
-    int visionRange     = 100;   // zasięg widzenia
-    int speed           = 2;     // prędkość
+    int organismSize    = 20;
+    int visionRange     = 100;
+    int speed           = 2;
     bool inMenu         = true;
 
     InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "Selection simulator");
-    SetTargetFPS(60);
+    SetTargetFPS(1000);
 
     while (!WindowShouldClose()) {
         if (inMenu) {
@@ -42,8 +42,6 @@ void Simulation::run() {
         } else {
             FoodContainer foodContainer{foodCount};
             foodContainer.generateFood(foodCount);
-            std::cout << organismSize << std::endl;
-
             std::unique_ptr<entityFactory> entityFactorytest = std::make_unique<CreatureFactory>();
             CreatureContainer creatureContainer{
                     entityFactorytest,
@@ -52,11 +50,23 @@ void Simulation::run() {
                     static_cast<float>(speed)
             };
 
-            creatureContainer.generateSymmetricaly(creatureCount, organismSize);
+            creatureContainer.generateCentre(creatureCount,organismSize);
+
 
             while (!WindowShouldClose()) {
                 BeginDrawing();
                 ClearBackground(WHITE);
+//
+//
+//                auto history = creatureContainer.getDataHub()->getHistory();
+//                std::cout << "\n===== Statystyki dzienne =====\n";
+//                for (const auto& dayData : history) {
+//                    std::cout << "Dzień: " << dayData.day << "\n";
+//                    std::cout << "  Średni rozmiar:        " << dayData.avgSizePerDay      << "\n";
+//                    std::cout << "  Średnia prędkość:      " << dayData.avgVelPerDay       << "\n";
+//                    std::cout << "  Średni zasięg widzenia: " << dayData.avgSeeingRangePerDay << "\n";
+//                }
+
 
                 creatureContainer.render();
                 creatureContainer.update(foodContainer);
@@ -78,6 +88,7 @@ void Simulation::run() {
                 EndDrawing();
             }
         }
+
     }
 
     CloseWindow();

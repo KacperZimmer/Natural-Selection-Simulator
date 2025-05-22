@@ -31,7 +31,7 @@ void Creature::render() {
 
 double Creature::calcEnergyLoss() const {
 
-    return (pow(this->genome.getSize(), 3) * pow(this->getSpeed(),2) ) / 1000 / this->getRadius();
+    return (pow(this->genome.getSize(), 3) * pow(this->getSpeed(),2) ) / 200;
 }
 
 
