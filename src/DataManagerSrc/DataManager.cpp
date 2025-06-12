@@ -14,10 +14,7 @@ void DataManager::update(float velocity, float size, float seeingRadius, int day
             summary.avgSeeingRangePerDay = this->seeingRange / numOfOrganisms;
 
             history.push_back(summary);
-            for(auto& entry : this->history){
-                std::cout << " Dzień : " <<  entry.day << std::endl;
-                std::cout << " Srednia Predkosc : " << entry.avgVelPerDay;
-            }
+
         }
 
         currentDay = day;

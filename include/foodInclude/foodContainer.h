@@ -2,6 +2,8 @@
 #define EXAMPLE_FOODCONTAINER_H
 #include <vector>
 #include "Food.h"
+#include <memory>
+
 class FoodContainer {
 private:
     std::vector<std::unique_ptr<Food>> foodVector{};

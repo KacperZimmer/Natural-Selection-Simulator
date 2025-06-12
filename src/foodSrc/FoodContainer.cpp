@@ -1,6 +1,6 @@
 
 #include "../../include/foodInclude/foodContainer.h"
-
+#include <stdexcept>
 void FoodContainer::generateFood(int quantity) {
 
     if(this->foodNum == -1){
