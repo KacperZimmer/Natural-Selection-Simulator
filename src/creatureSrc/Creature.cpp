@@ -31,7 +31,7 @@ void Creature::render() {
 
 double Creature::calcEnergyLoss() const {
 
-    return (pow(this->genome.getSize(), 3) * pow(this->getSpeed(),2) ) / 150;
+    return (pow(this->genome.getSize(), 3) * pow(this->getSpeed(),2) ) / 200;
 }
 
 
@@ -58,7 +58,6 @@ void Creature::die() {
 
 void Creature::update(FoodContainer& foodContainer) {
 
-    std::cout << foodContainer.getFoodNum() << std::endl;
 
     if(this->genome.getEnergy() <= 0 || (foodContainer.getFoodNum() == 0 && foodConsumed == 0)){
         die();

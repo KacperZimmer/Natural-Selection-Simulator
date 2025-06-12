@@ -1,6 +1,6 @@
 
 #include "../../include/foodInclude/foodContainer.h"
-
+#include <stdexcept>
 void FoodContainer::generateFood(int quantity) {
 
     if(this->foodNum == -1){
@@ -49,6 +49,14 @@ size_t FoodContainer::containerSize() {
 
 int FoodContainer::getFoodNum() const {
     return foodNum;
+}
+
+FoodContainer::FoodContainer(int numOfFoodToGenerate) : numOfFoodToGenerate(numOfFoodToGenerate) {
+    this->numOfFoodToGenerate = numOfFoodToGenerate;
+}
+
+int FoodContainer::getNumOfFoodToGenerate() const {
+    return numOfFoodToGenerate;
 }
 
 

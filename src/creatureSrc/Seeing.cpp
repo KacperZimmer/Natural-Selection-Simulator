@@ -3,7 +3,6 @@
 #include <iostream>
 #include <algorithm>
 #include "raymath.h"
-
 void Seeing::highlightVisionRange() {
 
     if(this->shouldDisplayVisionRange){
@@ -26,7 +25,7 @@ bool Seeing::ShouldDisplayVisionRange() const {
 int Seeing::isFoodInRange(const std::vector<std::unique_ptr<Food>>& foodVector){
 
 
-    this->closestDistance = MAXFLOAT;
+    this->closestDistance = 3.402823466e+38F;
 
     float currentDistance;
     int indexToReturn{-1};

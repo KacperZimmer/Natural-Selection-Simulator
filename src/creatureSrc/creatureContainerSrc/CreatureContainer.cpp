@@ -25,9 +25,8 @@ void CreatureContainer::update(FoodContainer& foodContainer) {
 
 void CreatureContainer::generate(int quantity) {
 
-    for(int i = 0; i < quantity; ++i){
-        this->creatureContainer.push_back(this->factory->prepareOne(100,100,10.f, 2.f, 30.f));
-    }
+
+
 }
 
 void CreatureContainer::turnOnVision() {
@@ -50,6 +49,26 @@ void CreatureContainer::turnOffVision() {
     }
 }
 
+
+void CreatureContainer::generateCentre(size_t quantity, float radius) {
+    this->size = quantity;
+
+    const float centerX = SCREEN_WIDTH  * 0.5f;
+    const float centerY = SCREEN_HEIGHT * 0.5f;
+
+    creatureContainer.clear();
+
+    for (size_t i = 0; i < quantity; ++i) {
+        auto creature = factory->prepareOne(
+                centerX,
+                centerY,
+                this->sizeCreature,
+                2.0f,
+                this->seeingRange
+        );
+        creatureContainer.push_back(std::move(creature));
+    }
+}
 void CreatureContainer::generateSymmetricaly(size_t quantity,float radius) {
 
     this->size = quantity;
@@ -60,17 +79,17 @@ void CreatureContainer::generateSymmetricaly(size_t quantity,float radius) {
     float spacing = (SCREEN_HEIGHT / ((radius) * 2 * static_cast<float> (quantity))) *
                     static_cast<float>((75 * ((scale == 0) ? 1 : scale)));
 
+//    std::cout << this->sizeCreature << std::endl;
 
     for(int i = 0; i < 4; ++i){
         for(int j = 0; j < numEachSide; ++j) {
 
 
             std::unique_ptr<Creature> currentCreature = std::move(factory->prepareOne(
-                    //TODO implement speed based on deltatime
                     this->startingXpos,
                     this->startingYpos,
-                    radius, 2.f,
-                    40.f));
+                    this->sizeCreature, 2.f,
+                    this->seeingRange));
 
             creatureContainer.push_back(std::move(currentCreature));
 
@@ -99,8 +118,13 @@ void CreatureContainer::generateSymmetricaly(size_t quantity,float radius) {
     }
 }
 
-CreatureContainer::CreatureContainer(std::unique_ptr<entityFactory> &factory) {
-
+CreatureContainer::CreatureContainer(std::unique_ptr<entityFactory> &factory,  float size, float seeingRange, float speed) {
+    this->sizeCreature = size;
+    this->seeingRange = seeingRange;
+    this->speed = speed;
+    auto statsObs = std::make_shared<DataManager>();
+    this->observers.push_back(statsObs);
+    this->dataHub = statsObs;
     this->factory = std::move(factory);
 }
 
@@ -210,34 +234,54 @@ void CreatureContainer::updateStatus(FoodContainer& foodContainer) {
 }
 
 void CreatureContainer::processEndOfDayCycle(FoodContainer &foodContainer) {
-    if(countSleeping == size){
-        for(size_t i = 0; i < this->creatureContainer.size(); ++i) {
 
-            if (this->creatureContainer[i] == nullptr) {
-                continue;
-            }
+    if (countSleeping == size) {
+        for (size_t i = 0; i < this->creatureContainer.size(); ++i) {
+            if (this->creatureContainer[i] == nullptr) continue;
 
-            if (creatureContainer[i]->shouldReproduce() == true) {
+            if (creatureContainer[i]->shouldReproduce()) {
                 this->generateNewCreature(i);
                 ++this->size;
             }
         }
-        foodContainer.generateFood(30);
 
-        for(const auto & i : this->creatureContainer){
+        foodContainer.generateFood(foodContainer.getNumOfFoodToGenerate());
 
-            if(i == nullptr){
-                continue;
-            }
 
+        for (const auto &i : this->creatureContainer) {
+            if (i == nullptr) continue;
 
             i->wakeUp();
-            ++day;
-            notify(i->getSpeed(), i->getRadius(), i->getGenome().getSeeingRadius(),day);
+
+            notify(
+                    i->getSpeed(),
+                    i->getRadius(),
+                    i->getGenome().getSeeingRadius(),
+                    day,
+                    this->getAive()
+            );
         }
+        ++day;
+
 
     }
+}
 
+
+size_t CreatureContainer::getAive() {
+    int sum{};
+
+    for(auto& creature : this->creatureContainer){
+        if(creature != nullptr){
+            ++sum;
+        }
+    }
+
+    return sum;
+}
+
+const std::shared_ptr<DataManager> &CreatureContainer::getDataHub() const {
+    return dataHub;
 }
 
 
