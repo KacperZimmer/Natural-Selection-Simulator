@@ -36,7 +36,6 @@ void Simulation::run() {
             GuiSpinner({SCREEN_WIDTH/2 - 60, 150, 120, 30}, "Jedzenie:",        &foodCount,     1, 300, false);
             GuiSpinner({SCREEN_WIDTH/2 - 60, 200, 120, 30}, "Organizm (px):",   &organismSize,  1, 10,  false);
             GuiSpinner({SCREEN_WIDTH/2 - 60, 250, 120, 30}, "Zasieg (px):",     &visionRange,   10, 50,  false);
-            GuiSpinner({SCREEN_WIDTH/2 - 60, 300, 120, 30}, "Predkosc:",        &speed,         1, 10,  false);
 
             if (GuiButton({SCREEN_WIDTH/2 - 60, 360, 120, 40}, "Start")) {
                 inMenu = false;
@@ -48,14 +47,13 @@ void Simulation::run() {
             FoodContainer foodContainer{foodCount};
             foodContainer.generateFood(foodCount);
 
-
-    std::unique_ptr<entityFactory> entityFactorytest = std::make_unique<CreatureFactory>();
-    CreatureContainer creatureContainer{
-            entityFactorytest,
-            static_cast<float>(organismSize),
-            static_cast<float>(visionRange),
-            static_cast<float>(speed)
-    };
+            std::unique_ptr<entityFactory> entityFactorytest = std::make_unique<CreatureFactory>();
+            CreatureContainer creatureContainer{
+                    entityFactorytest,
+                    static_cast<float>(organismSize),
+                    static_cast<float>(visionRange),
+                    static_cast<float>(speed)
+            };
             creatureContainer.generateCentre(creatureCount, organismSize);
 
             while (!WindowShouldClose() && !exitRequested) {
@@ -65,16 +63,15 @@ void Simulation::run() {
                 creatureContainer.render();
                 creatureContainer.update(foodContainer);
 
-                if (GuiButton({0, SCREEN_HEIGHT - 50, 120, 50},   "Pokaz promien"))
-                    creatureContainer.turnOnVision();
-                if (GuiButton({120, SCREEN_HEIGHT - 50, 120, 50}, "wylacz promien"))
-                    creatureContainer.turnOffVision();
-                if (GuiButton({240, SCREEN_HEIGHT - 50, 120, 50}, "przyspiesz"))
-                    creatureContainer.inreaseRelativeSpeed();
-                if (GuiButton({360, SCREEN_HEIGHT - 50, 120, 50}, "zwolnij"))
-                    creatureContainer.slowDownRelativeSpeed();
+                const int btnWidth = 160;
+                const int btnHeight = 50;
+                const int btnY = SCREEN_HEIGHT - btnHeight;
 
-                if (!showSavePrompt && GuiButton({480, SCREEN_HEIGHT - 50, 160, 50}, "Zapisz")) {
+                if (GuiButton({0, btnY, btnWidth, btnHeight},   "Pokaz promien"))
+                    creatureContainer.turnOnVision();
+                if (GuiButton({btnWidth, btnY, btnWidth, btnHeight}, "Wylacz promien"))
+                    creatureContainer.turnOffVision();
+                if (!showSavePrompt && GuiButton({2 * btnWidth, btnY, btnWidth, btnHeight}, "Zapisz")) {
                     showSavePrompt = true;
                     saveFilePath[0] = '\0';
                 }
